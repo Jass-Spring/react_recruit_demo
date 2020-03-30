@@ -98,17 +98,23 @@ export const getUser = () => {
   }
 }
 
-// 接收用户列表同步action
+// 获取用户列表同步action
 const receiveUserList = (userList) => ({ type: RECEIVE_USER_LIST, data: userList })
 
+// 获取用户列表异步action
 export const getUserList = (type) => {
   return async dispatch => {
     const response = await reqUserList(type)
     const result = response.data
     if (result.code === 0) {
       dispatch(receiveUserList(result.data))
-    } else {
-      
     }
   }
+}
+
+// 发送消息异步action
+export const sendMsg = ({ from, to, content }) => {
+  return dispatch => {
+    console.log('发送消息', { from, to, content })
+  } 
 }

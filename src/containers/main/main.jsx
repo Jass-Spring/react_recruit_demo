@@ -113,7 +113,7 @@ class Main extends Component {
           }
           <Route path="/laobaninfo" component={LaobanInfo} />
           <Route path="/dasheninfo" component={DashenInfo} />
-          <Route path="/chat" component={chat} />
+          <Route path="/chat/:userid" component={Chat} />
           <Route component={NotFound} />
         </Switch>
         { currentNav ? <NavFooter navList={navList} /> : null}
