@@ -4,16 +4,18 @@ import { connect } from 'react-redux'
 import { NavBar } from 'antd-mobile'
 import Cookies from 'js-cookie'
 
-import { getRedirect } from '../../utils'
-import { getUser } from '../../redux/actions'
 import LaobanInfo from '../laoban-info/laoban-info'
 import DashenInfo from '../dashen-info/dashen-info'
 import Laoban from '../laoban/laoban'
 import Dashen from '../dashen/dashen'
 import Message from '../message/message'
 import Personal from '../personal/personal'
+import Chat from '../chat/chat'
 import NotFound from '../../components/not-found/not-found'
 import NavFooter from '../../components/nav-footer/nav-footer'
+
+import { getRedirect } from '../../utils'
+import { getUser } from '../../redux/actions'
 
 /**
  * 1.实现自动登录
@@ -104,13 +106,14 @@ class Main extends Component {
     // 1-2-2-2.根据路径重定向
     return (
       <div>
-        { currentNav ? <NavBar>{currentNav.title}</NavBar> : null }
+        { currentNav ? <NavBar className="sticky-header">{currentNav.title}</NavBar> : null }
         <Switch>
           {
             navList.map(nav => <Route key={nav.path} path={nav.path} component={nav.component} />)
           }
           <Route path="/laobaninfo" component={LaobanInfo} />
           <Route path="/dasheninfo" component={DashenInfo} />
+          <Route path="/chat" component={chat} />
           <Route component={NotFound} />
         </Switch>
         { currentNav ? <NavFooter navList={navList} /> : null}

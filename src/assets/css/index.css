@@ -5,8 +5,15 @@
 }
 
 .am-tab-bar {
-  position: fixed;
   bottom: 0;
   width: 100%;
   height: inherit;
+  position: fixed;
+}
+
+.sticky-header {
+  top: 0;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
 }

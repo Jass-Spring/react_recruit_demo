@@ -2,13 +2,15 @@ import {
   AUTH_SUCCESS,
   ERROR_MSG,
   RECEIVE_USER,
-  RESET_USER
+  RESET_USER,
+  RECEIVE_USER_LIST
 } from './action-types'
 import {
   reqRegister,
   reqLogin,
   reqUpdateUser,
-  reqUser
+  reqUser,
+  reqUserList
 } from '../api/index'
 
 // 授权成功同步action
@@ -49,7 +51,6 @@ export const register = (user) => {
     }
   }
 }
-
 // 登录异步action
 export const login = (user) => {
   const { username, password } = user
@@ -71,7 +72,6 @@ export const login = (user) => {
     }
   }
 }
-
 // 更新用户异步action
 export const updateUser = (user) => {
   return async dispatch => {
@@ -85,7 +85,6 @@ export const updateUser = (user) => {
     }
   }
 }
-
 // 获取用户信息异步action
 export const getUser = () => {
   return async dispatch => {
@@ -95,6 +94,21 @@ export const getUser = () => {
       dispatch(receiveUser(result.data))
     } else {
       dispatch(resetUser(result.msg))
+    }
+  }
+}
+
+// 接收用户列表同步action
+const receiveUserList = (userList) => ({ type: RECEIVE_USER_LIST, data: userList })
+
+export const getUserList = (type) => {
+  return async dispatch => {
+    const response = await reqUserList(type)
+    const result = response.data
+    if (result.code === 0) {
+      dispatch(receiveUserList(result.data))
+    } else {
+      
     }
   }
 }

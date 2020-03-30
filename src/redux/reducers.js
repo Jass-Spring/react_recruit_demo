@@ -4,7 +4,8 @@ import {
   AUTH_SUCCESS,
   ERROR_MSG,
   RECEIVE_USER,
-  RESET_USER
+  RESET_USER,
+  RECEIVE_USER_LIST
 } from './action-types'
 import { getRedirect } from '../utils'
 
@@ -14,7 +15,7 @@ const initUser = {
   msg: '',
   redirectTo: ''
 }
-
+// 产生user的reducer
 function user(state = initUser, action) {
   switch (action.type) {
     case AUTH_SUCCESS:
@@ -31,6 +32,18 @@ function user(state = initUser, action) {
   }
 }
 
+const initUserList = []
+// 产生userList的reducer
+function userList(state = initUserList, action) {
+  switch (action.type) {
+    case RECEIVE_USER_LIST:
+      return action.data
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
-  user
+  user,
+  userList
 })
