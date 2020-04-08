@@ -33,7 +33,7 @@ export default class HeaderSelector extends Component {
     const { icon } = this.state
     const ListHeader = !icon ? '请选择头像:' : (
       <div>
-        已选择头像:<img src={icon} />
+        已选择头像:<img src={icon} alt="" />
       </div>
     )
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { NavBar, List, InputItem } from 'antd-mobile'
+import { NavBar, List, InputItem, Grid } from 'antd-mobile'
 
 import { sendMsg } from '../../redux/actions'
 
@@ -8,7 +8,13 @@ const Item = List.Item
 
 class Chat extends Component {
   state = {
-    content: ''
+    content: '',
+    isShow: false
+  }
+
+  componentWillMount () {
+    const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝']
+    this.emojis = emojis.map(emoji => ({ text: emoji }))
   }
 
   handleSend = () => {
@@ -18,7 +24,20 @@ class Chat extends Component {
     if (content) {
       this.props.sendMsg({ from, to, content })
     }
-    this.setState({ content: '' })
+    this.setState({
+      content: '',
+      isShow: false
+    })
+  }
+
+  toggleShow = () => {
+    const isShow = !this.state.isShow
+    this.setState({ isShow })
+    if (isShow) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+      }, 0)
+    }
   }
 
   render () {
@@ -73,10 +92,28 @@ class Chat extends Component {
             placeholder="请输入"
             value={this.state.content}
             onChange={val => this.setState({ content: val })}
+            onFocus={() => this.setState({ isShow: false })}
             extra={
-              <span onClick={this.handleSend}>发送</span>
+              <span>
+                <span onClick={this.toggleShow}>😃</span>
+                <span onClick={this.handleSend}>发送</span>
+              </span>
             }
           />
+
+          {
+            this.state.isShow ? (
+              <Grid
+                data={this.emojis}
+                columnNum={8}
+                carouselMaxRow={4}
+                isCarousel={true}
+                onClick={item => {
+                  this.setState({ content: this.state.content + item.text })
+                }}
+              />
+            ) : null
+          }
         </div>
       </div>
     )
