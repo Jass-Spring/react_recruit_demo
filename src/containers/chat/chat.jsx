@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { NavBar, List, InputItem, Grid } from 'antd-mobile'
+import { NavBar, List, InputItem, Grid, Icon } from 'antd-mobile'
 
 import { sendMsg } from '../../redux/actions'
 
@@ -15,6 +15,14 @@ class Chat extends Component {
   componentWillMount () {
     const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝']
     this.emojis = emojis.map(emoji => ({ text: emoji }))
+  }
+
+  componentDidMount () {
+    window.scrollTo(0, document.body.scrollHeight)
+  }
+
+  componentDidUpdate () {
+    window.scrollTo(0, document.body.scrollHeight)
   }
 
   handleSend = () => {
@@ -59,8 +67,15 @@ class Chat extends Component {
 
     return (
       <div id="chat-page">
-        <NavBar>{targetName}</NavBar>
-        <List>
+        <NavBar
+          className="sticky-header"
+          icon={<Icon type="left" />}
+          onLeftClick={() => this.props.history.goBack()}
+        >
+          {targetName}
+        </NavBar>
+        
+        <List style={{ paddingTop: 45, paddingBottom: 45 }}>
           {
             msgs.map(msg => {
               if (myId === msg.to) {
