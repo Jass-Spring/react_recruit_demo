@@ -11,22 +11,42 @@ const Brief = Item.Brief
  * 2.得到所有lastMsg的数组
  * 3.对数组按create_time降序排序
  */
-function getLastMsgs (chatMsgs) {
+function getLastMsgs (chatMsgs, userId) {
   const lastMsgObjs = {}
+
+  // 1.找出每个chat_id的最后一条消息lastMsg，以{ chat_id, lastMsg }的形式保存
   chatMsgs.forEach(msg => {
+    if (msg.to === userId && !msg.read) {
+      msg.unReadCount = 1
+    } else {
+      msg.unReadCount = 0
+    }
+
     const chatId = msg.chat_id
+    // 获取已经保存的lastMsg
     const lastMsg = lastMsgObjs[chatId]
+
     if (!lastMsg) {
+      // 没有lastMsg，将msg保存为lastMsg
       lastMsgObjs[chatId] = msg
     } else {
+      // 有lastMsg，统计unReadCount
+      const unReadCount = lastMsg.unReadCount + msg.unReadCount
+
       if (msg.create_time > lastMsg.create_time) {
+        // 如果msg比lastMsg晚，将msg保存为lastMsg
         lastMsgObjs[chatId] = msg
       }
+
+      // 将unReadCount保存到最新的lastMsg上
+      lastMsgObjs[chatId].unReadCount = unReadCount
     }
   })
 
+  // 2.得到所有lastMsg的数组
   const lastMsgs = Object.values(lastMsgObjs)
 
+  // 3.对数组按create_time降序排序
   lastMsgs.sort((m1, m2) => m2.create_time - m1.create_time)
 
   return lastMsgs
@@ -38,7 +58,7 @@ class Message extends Component {
     const { users, chatMsgs } = this.props.chat
 
     // 对chatMsgs按chat_id进行分组
-    const lastMsgs = getLastMsgs(chatMsgs)
+    const lastMsgs = getLastMsgs(chatMsgs, user._id)
 
     return (
       <List style={{ paddingTop: 45, paddingBottom: 50 }}>
@@ -50,7 +70,7 @@ class Message extends Component {
             return (
               <Item
                 key={msg._id}
-                extra={<Badge text={1} />}
+                extra={<Badge text={msg.unReadCount} />}
                 thumb={targetUser.header ? require(`../../assets/images/${targetUser.header}.png`) : null}
                 arrow="horizontal"
                 onClick={() => this.props.history.push(`/chat/${targetUserId}`)}
