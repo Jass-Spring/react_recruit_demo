@@ -11,12 +11,12 @@ const Brief = Item.Brief
  * 2.得到所有lastMsg的数组
  * 3.对数组按create_time降序排序
  */
-function getLastMsgs (chatMsgs, userId) {
+function getLastMsgs (chatMsgs, userid) {
   const lastMsgObjs = {}
 
   // 1.找出每个chat_id的最后一条消息lastMsg，以{ chat_id, lastMsg }的形式保存
   chatMsgs.forEach(msg => {
-    if (msg.to === userId && !msg.read) {
+    if (msg.to === userid && !msg.read) {
       msg.unReadCount = 1
     } else {
       msg.unReadCount = 0
