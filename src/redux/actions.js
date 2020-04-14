@@ -7,7 +7,8 @@ import {
   RESET_USER,
   RECEIVE_USER_LIST,
   RECEIVE_MSG,
-  RECEIVE_MSG_LIST
+  RECEIVE_MSG_LIST,
+  MSG_READ
 } from './action-types'
 import {
   reqRegister,
@@ -15,7 +16,8 @@ import {
   reqUpdateUser,
   reqUser,
   reqUserList,
-  reqMsgList
+  reqMsgList,
+  reqReadMsg
 } from '../api/index'
 
 /**
@@ -57,6 +59,18 @@ async function getMsgList (dispatch, userid) {
   }
 }
 
+// 更新未读消息异步action
+export const readMsg = (from, to) => {
+  return async dispatch => {
+    const response = await reqReadMsg(targetId)
+    const result = response.data
+    if (result.code === 0) {
+      const count = result.data
+      dispatch(msgRead(from, to, count))
+    }
+  }
+}
+
 // 授权成功同步action
 const authSuccess = (user) => ({ type: AUTH_SUCCESS, data: user })
 // 提示错误信息同步action
@@ -71,6 +85,8 @@ const receiveUserList = (userList) => ({ type: RECEIVE_USER_LIST, data: userList
 const receiveMsgList = ({ users, chatMsgs, userid }) => ({ type: RECEIVE_MSG_LIST, data: { users, chatMsgs, userid } })
 // 接收一个消息的同步action
 const receiveMsg = (chatMsg, userid) => ({ type: RECEIVE_MSG, data: { chatMsg, userid } })
+// 更新未读消息同步action
+const msgRead = (from, to, count) => ({ type: MSG_READ, data: { from, to, count }})
 
 // 注册异步action
 export const register = (user) => {
