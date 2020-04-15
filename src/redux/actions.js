@@ -62,7 +62,7 @@ async function getMsgList (dispatch, userid) {
 // 更新未读消息异步action
 export const readMsg = (from, to) => {
   return async dispatch => {
-    const response = await reqReadMsg(targetId)
+    const response = await reqReadMsg(from)
     const result = response.data
     if (result.code === 0) {
       const count = result.data

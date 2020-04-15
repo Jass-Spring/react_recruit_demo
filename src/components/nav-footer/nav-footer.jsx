@@ -7,7 +7,7 @@ const Item = TabBar.Item
 
 class NavFooter extends Component {
   static propTypes = {
-    navList: PropTypes.array.isRequired
+    navList: PropTypes.array.isRequired,
     unReadCount: PropTypes.number.isRequired
   }
 
